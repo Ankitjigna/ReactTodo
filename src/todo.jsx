@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function todo() {
   let [todos, setTodos] = useState([{ task: "sample", id: uuidv4() }]);
-  let [newTodo, setNewTodo] = useState();
+  let [newTodo, setNewTodo] = useState("");
 
   let newAddTask = () => {
     setTodos([...todos, { task: newTodo, id: uuidv4() }]);
@@ -14,9 +14,13 @@ export default function todo() {
     setNewTodo(event.target.value);
   };
 
+  let deleteTodo =(id)=>{
+    setTodos((prevTodo) =>todos.filter((prevTodo)=>prevTodo.id != id));
+  }
+  
   return (
     <>
-      <div>
+      <div className="box">
         <input
           placeholder="add new task"
           value={newTodo}
@@ -28,12 +32,13 @@ export default function todo() {
         <br></br>
       </div>
       <hr></hr>
-      <ul>
+      <ul className="todo">
         {todos.map((todo) => (
           <li key={todo.id}>
             {todo.task}
             &nbsp;
-            <button>delete</button>
+            {/* here arrow fn use to not excute the delete fn before click button */}
+            <button  onClick={()=>deleteTodo(todo.id)}>delete</button>  
           </li>
         ))}
       </ul>
